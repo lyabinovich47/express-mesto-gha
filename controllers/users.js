@@ -21,12 +21,18 @@ const createUser = (req, res) => {
 
 const getUser = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => res.status(RES_OK).send(user))
+    .then((user) => {
+      if (user) {
+        res.status(RES_OK).send(user);
+      } else {
+        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь по указанному id не найден' });
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь по указанному id не найден' });
+        res.status(ERROR_CODE).send({ message: 'Передан некорректный id при запросе пользователя' });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере' });
       }
     });
 };
