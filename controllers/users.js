@@ -44,26 +44,20 @@ const getUsers = (req, res) => {
 };
 
 const updateProfile = (req, res) => {
-  const { _id } = req.body;
-  // console.log(req.user_id);
-  User.findByIdAndUpdate(_id, {
-    name: req.body.name,
-    about: req.body.about,
-  }, {
-    new: true,
-    runValidators: true,
-    upsert: false,
-  })
+  const { name, about } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (user) {
         res.status(RES_OK).send(user);
       } else {
-        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь c указанным id не найден' });
+        throw new Error('User not found');
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные при обновлении профиля' });
+      } else if (err.message === 'User not found') {
+        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь c указанным id не найден' });
       } else {
         res.status(ERROR_SERVER).send({ message: err.message });
       }
@@ -71,22 +65,20 @@ const updateProfile = (req, res) => {
 };
 
 const updateAvatar = (req, res) => {
-  const { _id } = req.body;
-  User.findByIdAndUpdate(_id, { avatar: req.body.avatar }, {
-    new: true,
-    runValidators: true,
-    upsert: false,
-  })
+  const { avatar } = req.body;
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user) {
         res.status(RES_OK).send(user);
       } else {
-        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь c указанным id не найден' });
+        throw new Error('User not found');
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные при обновлении аватара' });
+      } else if (err.message === 'User not found') {
+        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь с указанным id не найден' });
       } else {
         res.status(ERROR_SERVER).send({ message: err.message });
       }
