@@ -76,12 +76,16 @@ const updateAvatar = (req, res) => {
     runValidators: true,
     upsert: false,
   })
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (user) {
+        res.send(user);
+      } else {
+        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь c указанным id не найден' });
+      }
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные при обновлении аватара' });
-      } else if (err.name === 'CastError') {
-        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь с указанным id не найден' });
       } else {
         res.status(ERROR_SERVER).send({ message: err.message });
       }
