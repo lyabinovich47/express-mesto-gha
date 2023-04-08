@@ -44,9 +44,9 @@ const getUsers = (req, res) => {
 };
 
 const updateProfile = (req, res) => {
-  // const { _id } = req.body;
-  console.log(req.user_id);
-  User.findByIdAndUpdate(req.user_id, {
+  const { _id } = req.body;
+  // console.log(req.user_id);
+  User.findByIdAndUpdate(_id, {
     name: req.body.name,
     about: req.body.about,
   }, {
