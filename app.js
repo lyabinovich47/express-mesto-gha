@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
   next();
 });
-app.use('/', router);
+app.use(router);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
