@@ -21,10 +21,18 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    .then(() => res.status(RES_OK).send({ message: 'Пост удален' }))
+  Card.findByIdAndDelete(req.params.cardId)
+    .then((card) => {
+      if (card) {
+        res.status(RES_OK).send({ message: 'Пост удален' });
+      } else {
+        res.status(ERROR_NOTFOUND).send({ message: 'Карточка с указанным id не найдена' });
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
+        res.status(ERROR_CODE).send({ message: 'Невалидный идентификатор карточки' });
+      } else if (err.statusCode === 404) {
         res.status(ERROR_NOTFOUND).send({ message: 'Карточка с указанным id не найдена' });
       } else {
         res.status(ERROR_SERVER).send({ message: err.message });
