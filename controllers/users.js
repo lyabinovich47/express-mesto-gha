@@ -55,7 +55,7 @@ const updateProfile = (req, res) => {
   })
     .then((user) => {
       if (user) {
-        res.send(user);
+        res.status(RES_OK).send(user);
       } else {
         res.status(ERROR_NOTFOUND).send({ message: 'Пользователь c указанным id не найден' });
       }
@@ -78,7 +78,7 @@ const updateAvatar = (req, res) => {
   })
     .then((user) => {
       if (user) {
-        res.send(user);
+        res.status(RES_OK).send(user);
       } else {
         res.status(ERROR_NOTFOUND).send({ message: 'Пользователь c указанным id не найден' });
       }
