@@ -75,12 +75,16 @@ const dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.status(RES_OK).send(card))
+    .then((card) => {
+      if (card) {
+        res.status(RES_OK).send(card);
+      } else (res.status(ERROR_NOTFOUND).send({ message: 'Карточка с указанным id не найдена' }));
+    })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные для снятия лайка' });
-      } else if (err.name === 'CastError') {
-        res.status(ERROR_NOTFOUND).send({ message: 'Передан несуществующий id карточки' });
+      if (err.name === 'CastError') {
+        res.status(ERROR_CODE).send({ message: 'Невалидный идентификатор карточки' });
+      } else if (err.statusCode === 404) {
+        res.status(ERROR_NOTFOUND).send({ message: 'Карточка с указанным id не найдена' });
       } else {
         res.status(ERROR_SERVER).send({ message: err.message });
       }
