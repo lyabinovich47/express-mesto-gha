@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const ERROR_NOTFOUND = require('../controllers/status');
+
+const ERROR_NOTFOUND = 404;
 
 const userRoutes = require('./users');
 const cardRoutes = require('./cards');
