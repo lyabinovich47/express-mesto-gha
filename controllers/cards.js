@@ -15,7 +15,7 @@ const createCard = (req, res) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные при создании карточки' });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
       }
     });
 };
@@ -32,10 +32,8 @@ const deleteCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_CODE).send({ message: 'Невалидный идентификатор карточки' });
-      } else if (err.statusCode === 404) {
-        res.status(ERROR_NOTFOUND).send({ message: 'Карточка с указанным id не найдена' });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
       }
     });
 };
@@ -44,7 +42,7 @@ const getCards = (req, res) => {
   Card.find({})
     .populate('owner')
     .then((cards) => res.status(RES_OK).send(cards))
-    .catch((err) => res.status(ERROR_SERVER).send({ message: err.message }));
+    .catch(() => res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' }));
 };
 
 const likeCard = (req, res) => {
@@ -61,10 +59,8 @@ const likeCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_CODE).send({ message: 'Невалидный идентификатор карточки' });
-      } else if (err.statusCode === 404) {
-        res.status(ERROR_NOTFOUND).send({ message: 'Карточка с указанным id не найдена' });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
       }
     });
 };
@@ -83,10 +79,8 @@ const dislikeCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_CODE).send({ message: 'Невалидный идентификатор карточки' });
-      } else if (err.statusCode === 404) {
-        res.status(ERROR_NOTFOUND).send({ message: 'Карточка с указанным id не найдена' });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
       }
     });
 };
