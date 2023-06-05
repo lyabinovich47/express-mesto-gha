@@ -19,6 +19,7 @@
           "_id"
         ]
       }
-    ]
+    ],
+    "linebreak-style": 0
   }
 }
