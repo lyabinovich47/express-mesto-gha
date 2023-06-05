@@ -94,7 +94,6 @@ const updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
-      console.log(user);
       if (user) {
         res.status(RES_OK).send(user);
       } else {
