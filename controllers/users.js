@@ -90,23 +90,27 @@ const updateProfile = (req, res, next) => {
     });
 };
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user) {
         res.status(RES_OK).send(user);
       } else {
-        throw new Error('User not found');
+        // throw new Error('User not found');
+        next(new NotFoundError('Пользователь с указанным id не найден'));
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные при обновлении аватара' });
+        // res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные' });
+        next(new BadRequestError('Переданы некорректные данные при обновлении аватара'));
       } else if (err.message === 'User not found') {
-        res.status(ERROR_NOTFOUND).send({ message: 'Пользователь с указанным id не найден' });
+        // res.status(ERROR_NOTFOUND).send({ message: 'Пользователь с указанным id не найден' });
+        next(new NotFoundError('Пользователь с указанным id не найден'));
       } else {
-        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
+        // res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
+        next(err);
       }
     });
 };
