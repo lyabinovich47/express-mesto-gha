@@ -7,9 +7,6 @@ const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
 
 const {
-  ERROR_CODE,
-  ERROR_NOTFOUND,
-  ERROR_SERVER,
   RES_OK,
   CREATED,
 } = require('./status');
