@@ -23,4 +23,16 @@ const validateUserId = celebrate({
   }),
 });
 
-module.exports = { validateUserBody, validateLogin, validateUserId };
+const validateUserProfileBody = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+  }),
+});
+
+module.exports = {
+  validateUserBody,
+  validateLogin,
+  validateUserId,
+  validateUserProfileBody,
+};
