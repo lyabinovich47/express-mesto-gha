@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 // const { login } = require('./controllers/users');
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 
 // app.post('/signin', login);
 app.use('/', router);
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {

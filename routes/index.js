@@ -4,12 +4,13 @@ const ERROR_NOTFOUND = 404;
 
 const userRoutes = require('./users');
 const cardRoutes = require('./cards');
+const { validateUserBody, validateLogin } = require('../middlewares/validators');
 
 const { createUser, login } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 
-router.post('/signup', createUser);
-router.post('/signin', login);
+router.post('/signup', validateUserBody, createUser);
+router.post('/signin', validateLogin, login);
 
 router.use(auth);
 
