@@ -17,4 +17,10 @@ const validateLogin = celebrate({
   }),
 });
 
-module.exports = { validateUserBody, validateLogin };
+const validateUserId = celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24),
+  }),
+});
+
+module.exports = { validateUserBody, validateLogin, validateUserId };
