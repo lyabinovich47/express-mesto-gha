@@ -131,7 +131,8 @@ const getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (user) {
-        res.status(RES_OK).send({ _id: user._id, email: user.email });
+        // res.status(RES_OK).send({ _id: user._id, email: user.email });
+        res.status(RES_OK).send(user);
       } else {
         // res.status(ERROR_NOTFOUND).send({ message: 'Пользователь не найден' });
         next(new NotFoundError('Пользователь не найден'));
