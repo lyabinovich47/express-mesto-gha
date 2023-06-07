@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
-// const { login } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 
@@ -19,15 +18,7 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '642d902c742adae36205dc19',
-//   };
 
-//   next();
-// });
-
-// app.post('/signin', login);
 app.use('/', router);
 app.use(errors());
 app.use(errorHandler);

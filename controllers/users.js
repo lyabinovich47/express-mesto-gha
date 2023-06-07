@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// const { Promise } = require('mongoose');
+
 const User = require('../models/user');
 const ConflictError = require('../errors/conflict-err');
 const BadRequestError = require('../errors/bad-request-err');
@@ -116,7 +116,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' }); // нужен выбор ключа!!!
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' }); // нужен выбор строки через тернарник!!!
       res.send({ token });
       // console.log('Аутентификация успешна! Пользователь в переменной user.');
       // res.status(200).send(user);
