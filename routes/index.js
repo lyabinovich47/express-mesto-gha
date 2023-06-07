@@ -1,6 +1,7 @@
 const router = require('express').Router();
+const NotFoundError = require('../errors/not-found-err');
 
-const ERROR_NOTFOUND = 404;
+// const ERROR_NOTFOUND = 404;
 
 const userRoutes = require('./users');
 const cardRoutes = require('./cards');
@@ -16,8 +17,9 @@ router.use(auth);
 
 router.use('/users', userRoutes);
 router.use('/cards', cardRoutes);
-router.use('*', (req, res) => {
-  res.status(ERROR_NOTFOUND).send({ message: 'Страница по указанному пути не найдена' });
+router.use('*', (req, res, next) => {
+  // res.status(ERROR_NOTFOUND).send({ message: 'Страница по указанному пути не найдена' });
+  next(new NotFoundError('Страница по указанному пути не найдена'));
 });
 
 module.exports = router;
