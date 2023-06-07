@@ -1,11 +1,12 @@
 const { celebrate, Joi } = require('celebrate');
 // const regExpUrl = require('../utils/constants');
+const isUrl = require('../utils/constants');
 
 const validateUserBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri(),
+    avatar: Joi.string().custom(isUrl),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
@@ -33,14 +34,14 @@ const validateUserProfileBody = celebrate({
 
 const validateUserAvatarBody = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string(),
+    avatar: Joi.string().custom(isUrl),
   }),
 });
 
 const validateCardBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required(),
+    link: Joi.string().required().custom(isUrl),
   }),
 });
 
