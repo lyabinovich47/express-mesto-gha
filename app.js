@@ -1,6 +1,6 @@
 const express = require('express');
-const path = require('path');
-// const bodyParser = require('body-parser');
+// const path = require('path'); т.к. убрали строку из-за static ниже
+// const bodyParser = require('body-parser');  убираем, заменяем на express.json() ниже
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const router = require('./routes');
@@ -16,7 +16,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', { // возможно вме
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public'))); убираем по ревью, т.к. нет папки static
 app.use(express.json());
 
 app.use('/', router);
