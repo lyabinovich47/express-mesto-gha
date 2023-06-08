@@ -68,15 +68,7 @@ const updateProfile = (req, res, next) => {
         next(new NotFoundError('Пользователь с указанным id не найден'));
       }
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        // res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные' });
-        next(new BadRequestError('Переданы некорректные данные при обновлении пользователя'));
-      } else {
-        // res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 const updateAvatar = (req, res, next) => {
