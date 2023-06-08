@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const router = require('./routes');
@@ -17,7 +17,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', { // возможно вме
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use('/', router);
 app.use(errors());
