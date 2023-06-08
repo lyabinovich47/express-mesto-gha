@@ -47,15 +47,7 @@ const getUser = (req, res, next) => {
         next(new NotFoundError('Пользователь по указанному id не найден'));
       }
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        // res.status(ERROR_CODE).send({ message: 'Передан некорректный id при запросе' });
-        next(new BadRequestError('Передан некорректный id при запросе пользователя'));
-      } else {
-        // res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 const getUsers = (req, res, next) => {
