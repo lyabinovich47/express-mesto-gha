@@ -1,7 +1,7 @@
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
-const BadRequestError = require('../errors/bad-request-err');
+// const BadRequestError = require('../errors/bad-request-err');
 const {
   // ERROR_CODE,
   // ERROR_NOTFOUND,
@@ -15,17 +15,7 @@ const createCard = (req, res, next) => {
 
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.status(CREATED).send(card))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        // res
-        // .status(ERROR_CODE)
-        // .send({ message: 'Переданы некорректные данные при создании карточки' });
-        next(new BadRequestError('Переданы некорректные данные при создании карточки'));
-      } else {
-        // res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 // const deleteCard = (req, res) => {
@@ -61,7 +51,7 @@ const deleteCard = (req, res, next) => {
 
 const getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
+    .populate(['owner', 'likes'])
     .then((cards) => res.status(RES_OK).send(cards))
     // .catch(() => res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' }));
     .catch(next);
@@ -73,6 +63,7 @@ const likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+    .populate(['owner', 'likes'])
     .then((card) => {
       if (card) {
         res.status(RES_OK).send(card);
@@ -81,15 +72,7 @@ const likeCard = (req, res, next) => {
         next(new NotFoundError('Карточка с указанным id не найдена'));
       }
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        // res.status(ERROR_CODE).send({ message: 'Невалидный идентификатор карточки' });
-        next(new BadRequestError('Невалидный идентификатор карточки'));
-      } else {
-        // res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 const dislikeCard = (req, res, next) => {
@@ -98,6 +81,7 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+    .populate(['owner', 'likes'])
     .then((card) => {
       if (card) {
         res.status(RES_OK).send(card);
@@ -106,15 +90,7 @@ const dislikeCard = (req, res, next) => {
         next(new NotFoundError('Карточка с указанным id не найдена'));
       }
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        // res.status(ERROR_CODE).send({ message: 'Невалидный идентификатор карточки' });
-        next(new BadRequestError('Невалидный идентификатор карточки'));
-      } else {
-        // res.status(ERROR_SERVER).send({ message: 'Произошла ошибка' });
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 module.exports = {
