@@ -6,13 +6,9 @@ const { errors } = require('celebrate');
 const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 
-const { PORT = 3000 } = process.env;
+const { PORT, MONGO_URL } = require('./config');
 
-mongoose.connect('mongodb://0.0.0.0:27017/mestodb', { // возможно вместо localhost нужно использовать 127.0.0.1 или 0.0.0.0
-  // useNewUrlParser: true,
-  // useCreateIndex: true,
-  // useFindAndModify: false,
-});
+mongoose.connect(MONGO_URL, {});
 
 const app = express();
 
