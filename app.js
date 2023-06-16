@@ -1,5 +1,5 @@
 const express = require('express');
-// const path = require('path'); т.к. убрали строку из-за static нижеже
+// const path = require('path'); т.к. убрали строку из-за static нижежеже
 // const bodyParser = require('body-parser');  убираем, заменяем на express.json()
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
